@@ -1,7 +1,7 @@
 import fastapi
-from api.users import router
-import psycopg2
-from create_data import init_db, get_db_connection
+from api.endpoint_users import router
+
+
 
 
 app = app = fastapi.FastAPI()

@@ -12,3 +12,5 @@ class Users(BaseModel):
 class LoginUser(BaseModel):
     email:str
     password:str
+
+

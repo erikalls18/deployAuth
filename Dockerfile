@@ -6,6 +6,7 @@ WORKDIR /usr/src/app
 RUN pip install fastapi 
 RUN pip install uvicorn
 RUN pip install psycopg2-binary
+ 
 
 #Copia todos los archivos de la carpeta app al directorio de trabajo 
 COPY app/* .
