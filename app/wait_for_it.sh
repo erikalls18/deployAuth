@@ -2,9 +2,10 @@
 
 
 
-#python3 /usr/src/app/create_data.py
-python3 /usr/src/app/db/models/user.py
+python3 /usr/src/app/create_data.py
+#python3 /usr/src/app/db/models/user.py
 uvicorn main:app --reload --host 0.0.0.0
+#echo 'Hello World!'
 
 
 # TO IMPLMENT !
