@@ -9,7 +9,9 @@ RUN pip install psycopg2-binary
  
 
 #Copia todos los archivos de la carpeta app al directorio de trabajo 
-COPY app/* .
+#COPY app/* .
+COPY app/ /usr/src/app/
+
 RUN pip list
 
 EXPOSE 8000

@@ -30,7 +30,7 @@ class Database:
 
     def create_tables(self):
         try: 
-            delete_table = """DROP TABLE auth_user"""
+            delete_table = """DROP TABLE IF EXISTS auth_user"""
             
             create_table= """CREATE TABLE IF NOT EXISTS auth_user(
                             user_id SERIAL PRIMARY KEY,
@@ -51,12 +51,18 @@ class Database:
             self.cursor.execute(create_table)
             self.cursor.execute(insert_data)
             self.connection.commit()
-            print("Tablas creadas con éxito")
+            print("Tables created")
         except Exception as error:
-            print(f"Error al crear tablas: {error}")
+            print(f"Error creating tables: {error}")
     def close(self):
         if self.cursor:
             self.cursor.close()
         if self.connection:
             self.connection.close()
-        print("Conexión cerrada")
+        print("Closed Conection")
+
+if __name__ == "__main__":
+    db = Database()         
+    db.create_connection()  
+    db.create_tables()      
+    db.close()

@@ -15,7 +15,7 @@ conn = psycopg2.connect(
 )
 
 cur= conn.cursor()
-delete_table = """DROP TABLE auth_user"""
+delete_table = """DROP TABLE IF EXIST auth_user"""
 create_table= """CREATE TABLE IF NOT EXISTS auth_user(
                 user_id SERIAL PRIMARY KEY,
                 user_name VARCHAR (100) UNIQUE NOT NULL,
