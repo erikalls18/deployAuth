@@ -2,7 +2,8 @@ version: '3.8'
 services:
 
   web:
-    image: python_image
+    image: python_image_6
+    
 
     restart: always
     ports:

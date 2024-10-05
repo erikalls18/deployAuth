@@ -6,13 +6,11 @@ db.create_connection()
 #db.create_tables()
 
 
-
-
-def get_user(email, password):
+def get_user(email):
     try:
         db.cursor.execute(
-            "SELECT * FROM auth_user WHERE email= %s AND password = %s",
-           ( email, password ))
+            "SELECT * FROM auth_user WHERE email= %s",
+           ( email,))
         user= db.cursor.fetchone()
         return user
     except  Exception as error:

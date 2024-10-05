@@ -6,6 +6,10 @@ WORKDIR /usr/src/app
 RUN pip install fastapi 
 RUN pip install uvicorn
 RUN pip install psycopg2-binary
+RUN pip install pyjwt
+RUN pip install pyjwt[crypto]
+RUN pip install passlib[bcrypt]
+
  
 
 #Copia todos los archivos de la carpeta app al directorio de trabajo 
