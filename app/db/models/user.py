@@ -2,11 +2,13 @@
 import os
 import psycopg2
 from passlib.context import CryptContext
+from db.config.db import Connection
 
-
+cnn = Connection()
+cnn.create_connection()
 class Database:
 
-    def __init__(self):
+    '''def __init__(self):
         # Obtener las variables de entorno
         self.db_user = os.getenv('POSTGRES_USER')
         self.db_password = os.getenv('POSTGRES_PASSWORD')
@@ -28,7 +30,11 @@ class Database:
             self.cursor = self.connection.cursor()
             print("Conectado a la base de datos")
         except Exception as error:
-            print(f"Error al conectar: {error}")
+            print(f"Error al conectar: {error}") '''
+    def __init__(self):
+        self.cursor = cnn.cursor
+        self.connection = cnn.connection
+        self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
     def hash_password(self, password):
         return self.pwd_context.hash(password)
@@ -78,7 +84,7 @@ class Database:
 
 if __name__ == "__main__":
     db = Database()         
-    db.create_connection()  
+    #db.create_connection()  
     db.create_tables()   
     db.insert_data()   
     db.close()

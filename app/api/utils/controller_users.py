@@ -1,8 +1,9 @@
 from db.models.user import Database
+from db.config.db import Connection
 
-
+cnn=Connection()
 db= Database()
-db.create_connection()
+cnn.create_connection()
 #db.create_tables()
 
 
