@@ -8,29 +8,6 @@ cnn = Connection()
 cnn.create_connection()
 class Database:
 
-    '''def __init__(self):
-        # Obtener las variables de entorno
-        self.db_user = os.getenv('POSTGRES_USER')
-        self.db_password = os.getenv('POSTGRES_PASSWORD')
-        self.db_name = os.getenv('POSTGRES_DB')
-        self.db_host = os.getenv('POSTGRES_HOST')
-        self.connection = None
-        self.cursor = None
-        self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-    def create_connection(self):
-        try:
-            self.connection = psycopg2.connect(
-                dbname=self.db_name,
-                user=self.db_user,
-                password=self.db_password,
-                host=self.db_host
-            )
-            self.cursor = self.connection.cursor()
-            print("Conectado a la base de datos")
-        except Exception as error:
-            print(f"Error al conectar: {error}") '''
     def __init__(self):
         self.cursor = cnn.cursor
         self.connection = cnn.connection
@@ -59,11 +36,11 @@ class Database:
     def insert_data(self):
             
             users = [
-                ('Zel', '12345', 'zel@mail.com', 'princesa'),
-                ('JohnDoe', 'password123', 'johndoe@mail.com', 'usuario'),
-                ('Alice', 'securePass!', 'alice@mail.com', 'administrador'),
-                ('Bob', 'qwerty', 'bob@mail.com', 'editor'),
-                ('Charlie', 'abcde123', 'charlie@mail.com', 'moderador')
+                ('Zel', '12345', 'zel@mail.com', 'user'),
+                ('JohnDoe', 'password123', 'johndoe@mail.com', 'user'),
+                ('Alice', 'securePass!', 'alice@mail.com', 'admin'),
+                ('Bob', 'qwerty', 'bob@mail.com', 'admin'),
+                ('Charlie', 'abcde123', 'charlie@mail.com', 'user')
             ]
 
             for user in users:
@@ -84,7 +61,6 @@ class Database:
 
 if __name__ == "__main__":
     db = Database()         
-    #db.create_connection()  
     db.create_tables()   
     db.insert_data()   
     db.close()

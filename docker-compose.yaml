@@ -2,18 +2,19 @@ version: '3.8'
 services:
 
   web:
-    image: python_image_6
-    
-
+    build:
+      context: .
+    image: api_img
     restart: always
     ports:
       - "8000:8000"
     volumes:
       - ./app:/usr/src/app
     depends_on:
-       db:
+      db:
         condition: service_healthy
         restart: true
+      
     env_file:
       - .env
     environment:
@@ -22,13 +23,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ankhara
       POSTGRES_DB: test_db
-      
+      PYTHONPATH: /usr/src/app
     entrypoint: ["/bin/bash", "-c", "/usr/src/app/wait_for_it.sh test_db"]
+   
   db:
     image: postgres
     restart: always
     
     environment:
+      POSTGRES_HOST: db
+      #POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ankhara
       POSTGRES_DB: test_db

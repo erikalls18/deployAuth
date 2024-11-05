@@ -25,7 +25,7 @@ class Connection():
                 host=self.db_host
             )
             self.cursor = self.connection.cursor()
-            print("Conectado a la base de datos")
+            print("Conected to the database")
         except Exception as error:
             print(f"Error al conectar: {error}")
 
