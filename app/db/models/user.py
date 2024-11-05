@@ -1,36 +1,24 @@
 
 import os
 import psycopg2
+from passlib.context import CryptContext
+from db.config.db import Connection
 
-
+cnn = Connection()
+cnn.create_connection()
 class Database:
 
     def __init__(self):
-        # Obtener las variables de entorno
-        self.db_user = os.getenv('POSTGRES_USER')
-        self.db_password = os.getenv('POSTGRES_PASSWORD')
-        self.db_name = os.getenv('POSTGRES_DB')
-        self.db_host = os.getenv('POSTGRES_HOST')
-        self.connection = None
-        self.cursor = None
+        self.cursor = cnn.cursor
+        self.connection = cnn.connection
+        self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-
-    def create_connection(self):
-        try:
-            self.connection = psycopg2.connect(
-                dbname=self.db_name,
-                user=self.db_user,
-                password=self.db_password,
-                host=self.db_host
-            )
-            self.cursor = self.connection.cursor()
-            print("Conectado a la base de datos")
-        except Exception as error:
-            print(f"Error al conectar: {error}")
+    def hash_password(self, password):
+        return self.pwd_context.hash(password)
 
     def create_tables(self):
         try: 
-            delete_table = """DROP TABLE auth_user"""
+            delete_table = """DROP TABLE IF EXISTS auth_user"""
             
             create_table= """CREATE TABLE IF NOT EXISTS auth_user(
                             user_id SERIAL PRIMARY KEY,
@@ -38,25 +26,41 @@ class Database:
                             password  VARCHAR (80) NOT NULL,
                             email VARCHAR(80) NOT NULL,
                             rol VARCHAR (20) NOT NULL)"""
-
-            insert_data= '''
-                            INSERT INTO auth_user (user_name, password, email, rol) VALUES ('Zel', '12345', 'zel@mail.com', 'princesa');
-                            INSERT INTO auth_user (user_name, password, email, rol) VALUES ('JohnDoe', 'password123', 'johndoe@mail.com', 'usuario');
-                            INSERT INTO auth_user (user_name, password, email, rol) VALUES ('Alice', 'securePass!', 'alice@mail.com', 'administrador');
-                            INSERT INTO auth_user (user_name, password, email, rol) VALUES ('Bob', 'qwerty', 'bob@mail.com', 'editor');
-                            INSERT INTO auth_user (user_name, password, email, rol) VALUES ('Charlie', 'abcde123', 'charlie@mail.com', 'moderador');
-
-                            '''
             self.cursor.execute(delete_table)
             self.cursor.execute(create_table)
-            self.cursor.execute(insert_data)
-            self.connection.commit()
-            print("Tablas creadas con éxito")
+            self.connection.commit() 
+            print("Tables created")
         except Exception as error:
-            print(f"Error al crear tablas: {error}")
+            print(f"Error creating tables: {error}")
+            
+    def insert_data(self):
+            
+            users = [
+                ('Zel', '12345', 'zel@mail.com', 'user'),
+                ('JohnDoe', 'password123', 'johndoe@mail.com', 'user'),
+                ('Alice', 'securePass!', 'alice@mail.com', 'admin'),
+                ('Bob', 'qwerty', 'bob@mail.com', 'admin'),
+                ('Charlie', 'abcde123', 'charlie@mail.com', 'user')
+            ]
+
+            for user in users:
+                hashed_password = self.hash_password(user[1])
+                insert_data = '''
+                    INSERT INTO auth_user (user_name, password, email, rol) 
+                    VALUES (%s, %s, %s, %s)'''
+                self.cursor.execute(insert_data, (user[0], hashed_password, user[2], user[3]))
+            self.connection.commit()
+            
+        
     def close(self):
         if self.cursor:
             self.cursor.close()
         if self.connection:
             self.connection.close()
-        print("Conexión cerrada")
+        print("Closed Conection")
+
+if __name__ == "__main__":
+    db = Database()         
+    db.create_tables()   
+    db.insert_data()   
+    db.close()
