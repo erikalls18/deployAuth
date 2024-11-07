@@ -13,10 +13,12 @@ This web application is built with FastAPI and provides an API for managing user
 ## Requirements
 
 - Docker
+- -docker-compose
 
 
 ## Installation
 
 - Clone the repository
+- Grant execute permission to the wait_for_it file
 - Start  the application with docker-compose up
 
