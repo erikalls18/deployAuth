@@ -6,15 +6,15 @@ from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime, timedelta, timezone
 import jwt
 from typing import Optional
-
 from pydantic import BaseModel
-#from typing import Annotated
+
 from jwt.exceptions import InvalidTokenError
 import os
 
+
 SECRET_KEY= os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
-#ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
+
 
 
 class Token(BaseModel):
@@ -25,8 +25,7 @@ class Token(BaseModel):
 class TokenData(BaseModel):
      username: Optional[str] = None 
 
-'''SECRET_KEY = "fd78e4a483e426dee527b1f85686628fa15cc23a05786164d8f6ffa38692cf56"
-ALGORITHM = "HS256" '''
+
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -57,42 +56,25 @@ class Auth():
 #to_encode is created a copy from data to avoid alter the original data
 def create_access_token( data: dict,  expires_delta: Optional[timedelta] = None):
         to_encode = data.copy()
-        #print(data)
         if expires_delta:
             expire = datetime.now(timezone.utc) + expires_delta
         else:
             expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         to_encode.update({"exp": expire})
-        encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+      
+      
+        encoded_jwt = jwt.encode(to_encode, SECRET_KEY.encode(), algorithm=ALGORITHM)
+        try:
+            decoded = jwt.decode(encoded_jwt, SECRET_KEY, algorithms=[ALGORITHM])
+            print("Invalid Token. Content:", decoded)
+            expiration_time = decoded["exp"]
+            current_time = datetime.now(timezone.utc).timestamp() 
+            print(expiration_time)
+        except Exception as e:
+            print("Error decoding the token:", e)
+
+
+   
+       
         return encoded_jwt
 
-'''# Dependencia para obtener el usuario actual
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-        token_data = TokenData(username = username)
-    except jwt.InvalidTokenError:
-        raise credentials_exception
-    
-    auth = Auth()  # Instanciar la clase Auth
-    user = auth.authenticate_user(LoginUser(email = token_data.username))  # Ajustar aquí según sea necesario
-    if user is None:
-      raise credentials_exception
-    return user
-
-
-
-async def get_current_active_user(
-    current_user:LoginUser= Depends(get_current_user),
-):
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user'''

@@ -1,4 +1,3 @@
-
 import os
 import psycopg2
 from passlib.context import CryptContext
@@ -27,6 +26,7 @@ class Database:
                             email VARCHAR(80) NOT NULL,
                             rol VARCHAR (20) NOT NULL)"""
             self.cursor.execute(delete_table)
+            self.connection.commit() 
             self.cursor.execute(create_table)
             self.connection.commit() 
             print("Tables created")
@@ -36,11 +36,11 @@ class Database:
     def insert_data(self):
             
             users = [
-                ('Zel', '12345', 'zel@mail.com', 'user'),
-                ('JohnDoe', 'password123', 'johndoe@mail.com', 'user'),
-                ('Alice', 'securePass!', 'alice@mail.com', 'admin'),
-                ('Bob', 'qwerty', 'bob@mail.com', 'admin'),
-                ('Charlie', 'abcde123', 'charlie@mail.com', 'user')
+                        ('Immanuel Kant', '12345', 'immanuel.kant@mail.com', 'user'),
+                        ('Jorge Luis Borges', 'password123', 'jorge.borges@mail.com', 'user'),
+                        ('Franz Kafka', 'securePass!', 'franz.kafka@mail.com', 'admin'),
+                        ('Milan Kundera', 'qwerty', 'milan.kundera@mail.com', 'admin'),
+                        ('Albert Camus', 'abcde123', 'albert.camus@mail.com', 'user')
             ]
 
             for user in users:

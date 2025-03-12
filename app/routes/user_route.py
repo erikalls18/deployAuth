@@ -5,14 +5,9 @@ from api.utils.controller_users import get_user
 from api.utils.auth import Auth , create_access_token
 import fastapi
 
-
-
-
 router = fastapi.APIRouter()
 users = []
 auth= Auth()
-
-
 
 @router.post("/login")
 async def get_auth_user(login_user: LoginUser):

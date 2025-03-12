@@ -15,4 +15,3 @@ class LoginUser(BaseModel):
 
 
 
-SECRET_KEY = "fd78e4a483e426dee527b1f85686628fa15cc23a05786164d8f6ffa38692cf56"
