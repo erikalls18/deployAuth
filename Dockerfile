@@ -3,16 +3,9 @@ FROM python:3.8
 #establce un directorio dentro del contenedor
 WORKDIR /usr/src/app
 
-RUN pip install fastapi 
-RUN pip install uvicorn
-RUN pip install psycopg2-binary
-RUN pip install pyjwt
-RUN pip install pyjwt[crypto]
-RUN pip install passlib[bcrypt]
-RUN pip install -U pytest
-RUN pip install requests
-#COPY requirements.txt .
-#RUN pip install -r requirements.txt
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
 
  
