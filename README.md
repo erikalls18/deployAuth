@@ -14,11 +14,13 @@ This web application is built with FastAPI and provides an API for managing user
 
 - Docker
 - Docker-compose
+- Create a .env file to store secrets and algorithm configurations.
 
 
 ## Installation
 
 - Clone the repository
 - Grant execute permission to the wait_for_it.sh file
+- buil the aplication with docker compose build 
 - Start  the application with docker-compose up
 
